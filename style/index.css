@@ -49,9 +49,6 @@ nav ul {
 }
 
 body {
-  /* display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  grid-gap: 1em; */
   min-height: 1vh;
   margin: 0;
 }
@@ -99,7 +96,8 @@ main#products h1 {
 }
 main#products section#games {
   display: flex;
-  
+  width: 100%;
+  height: 100%;
 }
 
 main#products section#games section#filter {
@@ -122,11 +120,13 @@ main#products section#games section#filter ul a:hover {
 main#products section#games .product {
   flex: 4;
   display: flex;
+  flex-wrap: wrap;
 }
 
 main#products section#games .product .gamecard {
   flex: 1;
   padding: 15px;
+  /*width:30%;*/
 }
 
 .cart {
@@ -145,7 +145,7 @@ main#products section#games .product .gamecard {
 .cart-image {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  border-radius: 0%;
   background-size: cover;
 }
 
@@ -173,7 +173,7 @@ main.cart-page {
 }
 
 main#products section#games .product .gamecard img {
-  width: 50%;
+  height: 150px;
 }
 
 main#products section#games .product .gamecard button {
@@ -221,6 +221,15 @@ input[type="text"] {
   color: red;
   font-size: 1rem;
   margin-top: 2px;
+}
+
+/*Specific*/
+main#specific {
+  text-align: center;
+}
+
+img.image {
+  width: 250px;
 }
 
 @media (max-width: 500px) {

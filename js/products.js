@@ -9,25 +9,15 @@ productArray.forEach(function(product){
     productsContainer.innerHTML +=
     `
     <div class="gamecard">
-    <h2>${product.name}</h2>
-    <img src="${product.image}" alt="${product.name}"></img>
-    <div class="product-price">${product.price}</div>
-    <button class="product-button" data-product="${product.id}">Add to cart</button>
+      <h2>${product.name}</h2>
+      <img src="${product.image}" alt="${product.name}" data-product="${product.id}"></img>
+      <div class="product-price">${product.symbol}${product.price}</div>
+      <button class="product-button" data-product="${product.id}">Add to cart</button>
     </div>
     `
   });
 
-const buttons = document.querySelectorAll(".product-button");
-buttons.forEach(function(button){
-  button.onclick = function(event){
-   // cartArray.push(parseInt(event.target.dataset.product))
-    const itemToAdd = productArray.find(item => item.id === event.target.dataset.product);
-    cartArray.push(itemToAdd);
-    showCart(cartArray);
-    console.log(cartArray);
-    localStorage.setItem("cartList", JSON.stringify(cartArray));
-  }
-});
+
 
 function showCart(cartItems){
   cart.style.display ="flex";
@@ -38,7 +28,7 @@ function showCart(cartItems){
     cartlist.innerHTML +=
     `<div class="cart-item">
       <h4>${cartElement.name}</h4>
-      <div style="background-image: ${cartElement.image}" class="cart-image"</div>
+      <div style="background-image: url('${cartElement.image}')" class="cart-image"</div>
       </div>
       `
   })
@@ -46,25 +36,69 @@ function showCart(cartItems){
 };
 
 
-// HENTE cartlistDiv og totalDiv og butBtn queryselect
-// let total = 0;
-// cartArray.forEach(item){
-//   let product = productArray[item-1]
-//   total += product.price;
-//   cartlistdiv.innerHTML +=
-//   `
-//   html greier fra product
-//   <div class="cart-item">
-//     <span class="item-name">${product.name}</span>
-//     <span class="item-price">${product.price}</span>
-//   </div>
-//   `
-// }
-// totalDiv.innerHTML = "Total: " + total;
-// buyBtn.href = "./cart.html?cartlist=" + str(cartArray);
+const baseUrl = "http://petterbakke.one/Gamehub/wordpress/wp-json/wc/store/products";
+const corsUrl = "https://noroffcors.herokuapp.com/";
+const corsEnabledUrl = corsUrl + baseUrl;
 
-// local.storage.put = cartArray;
+async function getProducts(url){
+  const response = await fetch(url);
+  const products = await response.json();
+  products.forEach(function(product){
+    productsContainer.innerHTML += `
+    
+    <div class="gamecard">
+      <h2>${product.name}</h2>
+      <img src="${product.images[0].src}" alt="${product.name}" data-product="${product.id}"></img>
+      <div class="product-price">${product.prices.currency_symbol}${product.prices.price}</div>
+      <button class="product-button" data-product="${product.id}">Add to cart</button>
+    </div>
+    `
+    let tempObject = {}
+    tempObject.name = product.name;
+    tempObject.id =  `${product.id}`;
+    tempObject.description = product.description;
+    tempObject.image = product.images[0].src;
+    tempObject.symbol = product.prices.currency_symbol;
+    tempObject.price = parseFloat(product.prices.price);
+    
+    productArray.push(tempObject)
+  })
+  // console.log(productArray);
+  // console.log(products);
+
+  const buttons = document.querySelectorAll(".product-button");
+  buttons.forEach(function(button){
+    button.onclick = function(event){
+    
+      const itemToAdd = productArray.find(item => item.id === event.target.dataset.product);
+      //if(itemToAdd === undefined){
+      //  let temp = {}
+     // }
+      cartArray.push(itemToAdd);
+      showCart(cartArray);
+      console.log(cartArray);
+      localStorage.setItem("cartList", JSON.stringify(cartArray));
+    }
+  });
 
 
-// In cart.html
-// let cart = local.storage.get()
+  const imgs = document.querySelectorAll(".gamecard img")
+
+  imgs.forEach(function(img){
+    img.addEventListener("click",function(event){
+      console.log(event.target.dataset.product);
+      const prod = productArray.find(item => item.id === event.target.dataset.product);
+      window.location.href = `specific.html?name=${prod.name}&img=${prod.image}&description=${prod.description}&price=${prod.price}&symbol=${prod.symbol}`
+    })
+
+  })
+};
+
+getProducts(baseUrl);
+
+
+  //getter bildene. querySelector
+  //onclicker bildene
+  //  sende brukern til specific.html med querystring
+  //  window.href = `lblb/specific.html?id=${event.target.data} `
+

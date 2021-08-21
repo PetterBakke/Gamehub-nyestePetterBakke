@@ -4,6 +4,7 @@ export const productArray = [
     description: "Battlefield V PS4",
     id: "1",
     image: "Battlefield v logo.jpg",
+    symbol: "$",
     price: 30,
   },
   {
@@ -11,6 +12,7 @@ export const productArray = [
     description: "GTA 5 PS4 game",
     id:"2",
     image: "GTA 5 Logo cover.jpg",
+    symbol: "$",
     price: 20,
   },
   {
@@ -18,6 +20,7 @@ export const productArray = [
     description: "Red Dead Redemption PS4 game",
     id: "3",
     image: "Red dead redemption logo cover.jpg",
+    symbol: "$",
     price: 25,
   },
 ];
