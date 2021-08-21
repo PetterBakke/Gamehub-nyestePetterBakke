@@ -94,7 +94,7 @@ async function getProducts(url){
   })
 };
 
-getProducts(baseUrl);
+getProducts(corsEnabledUrl);
 
 
   //getter bildene. querySelector
